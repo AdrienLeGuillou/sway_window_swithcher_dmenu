@@ -15,10 +15,10 @@ Usage:
           [-h | --help] [-v | --version]
 
 Options:
-    -d CMD, --dmenu-cmd CMD		    [default: "dmenu"]
+    -d CMD, --dmenu-cmd CMD         [default: "dmenu"]
         set the `dmenu` command to use (ex "rofi -dmenu")
 
-    -f FORMAT, --format FORMAT		[default: "W:%W | %A - %T"]
+    -f FORMAT, --format FORMAT      [default: "W:%W | %A - %T"]
         set the format for the window picker
             %O: Output (Display)
             %W: Workspace
