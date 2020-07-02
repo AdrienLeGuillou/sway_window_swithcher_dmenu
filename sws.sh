@@ -1,46 +1,82 @@
 #!/bin/sh
 #
 # Author: Adrien Le Guillou
-set -e # error if a commands as non 0 exit
-set -u # undefined variable as error
+# License: MIT
+
+set -e # error if a command as non 0 exit
+set -u # error if undefined variable
 
 FORMAT="W:%W | %A - %T"
 DMENU="dmenu"
 
 NAME="$(basename "$0")"
-VERSION="0.1"
+VERSION="0.2"
 DESCRIPTION="Window switcher for Sway using dmenu"
 HELP="
 $NAME. $VERSION - $DESCRIPTION
 
 Usage: 
-    $NAME [-h] [-f <format>] [-d <dmenu command>]
+    $NAME [-f | --format <format>] [-d | --dmenu-cmd <command>] 
+          [-h | --help] [-v | --version]
 
 Options:
-    -h display this help and exit
-    -d \`dmenu\` command (ex \"rofi -dmenu\")
-       (default: \"dmenu\")
-    -f set the format for the window picker
+    -d CMD, --dmenu-cmd CMD [default=\"dmenu\"]
+        set the \`dmenu\` command to use (ex \"rofi -dmenu\")
+
+    -f FORMAT, --format FORMAT [default=\"$FORMAT\"]
+        set the format for the window picker
             %O: Output (Display)
             %W: Workspace
             %A: Application
             %T: Window Title
-        in addition, (container id) is appended at the end in order to identify the window
-        default: $FORMAT "
+        (window_id) is appended at the end to identify the window
 
-while getopts 'f:d:h' OPTION
+    -v, --version
+        print version info and exit
+
+    -h, --help      
+        display this help and exit
+
+Examples:
+    # Default options work well if you have dmenu installed
+    sws.sh
+
+    # Use a different dmenu provider
+    sws.sh --dmenu-cmd \"wofi -d\"
+
+    # Add outputs name to the selector
+    sws --format \"[%O] W:%W | %A - %T\"
+"
+
+OPTS=$(getopt -n $NAME -o f:d:hv --long format:,dmenu-cmd:,help,version -- "$@")
+
+if [ $? != "0" ];
+then
+    echo "$HELP"
+    exit
+fi
+
+eval set -- "$OPTS"
+while :
 do
-    case "${OPTION}" in
-        f) 
-            FORMAT=${OPTARG}
-            ;;
-        d)
-            DMENU=${OPTARG}
-            ;;
-        h|?)
+    case "$1" in
+        -f | --format)
+            FORMAT=$2
+            shift 2 ;;
+        -d | --dmenu-cmd)
+            DMENU=$2
+            shift 2 ;;
+        -h | --help)
             echo "$HELP"
-            exit
-            ;;
+            exit ;;
+        -v | --version)
+            echo "Version $VERSION"
+            exit ;;
+        --) 
+            shift
+            break ;;
+        *)
+            break ;;
     esac
 done
 
@@ -76,5 +112,3 @@ CON_ID=${CON_ID%)}
 
 # Focus on the chosen window
 swaymsg [con_id=$CON_ID] focus
-
-
