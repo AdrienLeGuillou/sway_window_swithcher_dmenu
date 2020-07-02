@@ -2,13 +2,14 @@
 #
 # Author: Adrien Le Guillou
 # License: MIT
-
 set -e # error if a command as non 0 exit
 set -u # error if undefined variable
 
+# Default parameters
 FORMAT="W:%W | %A - %T"
 DMENU="dmenu"
 
+# Doc
 NAME="$(basename "$0")"
 VERSION="0.2"
 DESCRIPTION="Window switcher for Sway using dmenu"
@@ -48,35 +49,51 @@ Examples:
     sws --format \"[%O] W:%W | %A - %T\"
 "
 
-OPTS=$(getopt -n $NAME -o f:d:hv --long format:,dmenu-cmd:,help,version -- "$@")
+# Options parsing
+INVALID_ARGS=0 
+OPTS=$(getopt -n $NAME -o f:d:hv \
+       --long format:,dmenu-cmd:,help,version -- "$@") || INVALID_ARGS=1
 
-if [ $? != "0" ];
+# Exit with error and print $HELP if an invalid argument is passed
+# the previous command is allowed to fail for this purpose
+if [ "$INVALID_ARGS" -ne "0" ]
 then
     echo "$HELP"
-    exit
+    exit 1
 fi
 
+# Required for getopt parsing
 eval set -- "$OPTS"
+unset OPTS
+
 while :
 do
     case "$1" in
         -f | --format)
             FORMAT=$2
-            shift 2 ;;
+            shift 2 
+            ;;
         -d | --dmenu-cmd)
             DMENU=$2
-            shift 2 ;;
+            shift 2 
+            ;;
         -h | --help)
             echo "$HELP"
-            exit ;;
+            exit 
+            ;;
         -v | --version)
             echo "Version $VERSION"
-            exit ;;
+            exit 
+            ;;
         --) 
             shift
-            break ;;
+            break 
+            ;;
         *)
-            break ;;
+            echo "$HELP"
+            exit 1
+            break 
+            ;;
     esac
 done
 
