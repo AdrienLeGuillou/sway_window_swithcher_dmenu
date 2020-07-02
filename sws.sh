@@ -1,19 +1,26 @@
 #!/bin/sh
 #
 # Author: Adrien Le Guillou
+set -e # error if a commands as non 0 exit
+set -u # undefined variable as error
 
 FORMAT="W:%W | %A - %T"
+DMENU="dmenu"
 
 NAME="$(basename "$0")"
 VERSION="0.1"
 DESCRIPTION="Window switcher for Sway using dmenu"
-HELP="$NAME $VERSION - $DESCRIPTION
+HELP="
+$NAME. $VERSION - $DESCRIPTION
 
-Usage: $NAME [-h] [-f <format>]
+Usage: 
+    $NAME [-h] [-f <format>] [-d <dmenu command>]
 
 Options:
-    -h  display this help and exit
-    -f  set the format for the window picker
+    -h display this help and exit
+    -d \`dmenu\` command (ex \"rofi -dmenu\")
+       (default: \"dmenu\")
+    -f set the format for the window picker
             %O: Output (Display)
             %W: Workspace
             %A: Application
@@ -21,13 +28,16 @@ Options:
         in addition, (container id) is appended at the end in order to identify the window
         default: $FORMAT "
 
-while getopts f:h option
+while getopts 'f:d:h' OPTION
 do
-    case "${option}" in
+    case "${OPTION}" in
         f) 
             FORMAT=${OPTARG}
             ;;
-        h)
+        d)
+            DMENU=${OPTARG}
+            ;;
+        h|?)
             echo "$HELP"
             exit
             ;;
@@ -58,7 +68,7 @@ CON_ID=$(swaymsg -t get_tree | \
            id: .apps.id, app_id: .apps.app_id, name: .apps.name }
         | $FORMAT
         | tostring" | \
-    dmenu -i -p "Window Switcher")
+    $DMENU -i -p "Window Switcher")
 
 # Requires the actual `id` to be at the end and between paretheses
 CON_ID=${CON_ID##*(}

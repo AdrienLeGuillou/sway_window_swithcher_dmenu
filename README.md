@@ -8,13 +8,16 @@ You can either execute the script from a terminal or by binding it to a key
 combination in sway.
 
 ```
-sws.sh 0.1 - Window switcher for Sway using dmenu
+sws.sh. 0.1 - Window switcher for Sway using dmenu
 
-Usage: sws.sh [-h] [-f <format>]
+Usage: 
+    sws.sh [-h] [-f <format>] [-d <dmenu command>]
 
 Options:
-    -h  display this help and exit
-    -f  set the format for the window picker
+    -h display this help and exit
+    -d `dmenu` command (ex "rofi -dmenu")
+       (default: "dmenu")
+    -f set the format for the window picker
             %O: Output (Display)
             %W: Workspace
             %A: Application
@@ -36,4 +39,5 @@ Options:
 
 * Put the script somewhere in your $PATH
 * (optional) bind it to key combination `bindsym $mod+semicolon exec sws.sh`
+
 
