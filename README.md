@@ -1,4 +1,4 @@
-# sway_window_swithcher_dmenu"
+# sway_window_swithcher_dmenu
 
 Simple window switcher for sway, inspired by rofi and using dmenu
 
