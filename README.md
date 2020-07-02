@@ -12,13 +12,13 @@ sws.sh. 0.2 - Window switcher for Sway using dmenu
 
 Usage: 
     sws.sh [-f | --format <format>] [-d | --dmenu-cmd <command>] 
-           [-h | --help] [-v | --version]
+          [-h | --help] [-v | --version]
 
 Options:
-    -d CMD, --dmenu-cmd CMD [default="dmenu"]
+    -d CMD, --dmenu-cmd CMD		    [default: "dmenu"]
         set the `dmenu` command to use (ex "rofi -dmenu")
 
-    -f FORMAT, --format FORMAT [default="W:%W | %A - %T"]
+    -f FORMAT, --format FORMAT		[default: "W:%W | %A - %T"]
         set the format for the window picker
             %O: Output (Display)
             %W: Workspace
@@ -55,7 +55,12 @@ Examples:
 ## Install
 
 * Put the script somewhere in your $PATH
+* Make the script executable `chmod +x sws.sh`
 * (optional) bind it to key combination `bindsym $mod+semicolon exec sws.sh`
+
+
+
+
 
 
 
