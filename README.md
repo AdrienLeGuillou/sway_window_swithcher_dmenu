@@ -12,7 +12,7 @@ sws.sh. 0.2 - Window switcher for Sway using dmenu
 
 Usage: 
     sws.sh [-f | --format <format>] [-d | --dmenu-cmd <command>] 
-          [-h | --help] [-v | --version]
+           [-h | --help] [-v | --version]
 
 Options:
     -d CMD, --dmenu-cmd CMD         [default: "dmenu"]
@@ -24,7 +24,7 @@ Options:
             %W: Workspace
             %A: Application
             %T: Window Title
-        (window_id) is appended at the end to identify the window
+        (window_id) is always appended at the end to identify the window
 
     -v, --version
         print version info and exit
@@ -50,7 +50,7 @@ Examples:
 ## Requirements
 
 * [jq](https://stedolan.github.io/jq/)
-* dmenu (or a symlinked provider)
+* dmenu (default) or any dmenu like app (using the --dmenu-cmd option) 
 
 ## Install
 
