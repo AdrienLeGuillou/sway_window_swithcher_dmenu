@@ -115,8 +115,8 @@ CON_ID=$(swaymsg -t get_tree | \
         | {output: .output, workspace: .content.name, 
           apps: .content 
             | .. 
-            | {id: .id?|tostring, name: .name?, app_id: .app_id?} 
-            | select(.app_id != null)}
+            | {id: .id?|tostring, name: .name?, app_id: .app_id?, shell: .shell?} 
+            | select(.app_id != null or .shell != null)}
         | {output: .output, workspace: .workspace, 
            id: .apps.id, app_id: .apps.app_id, name: .apps.name }
         | $FORMAT
